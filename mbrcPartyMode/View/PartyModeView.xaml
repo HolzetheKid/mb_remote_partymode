@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="mbrcPartyMode.View.PartyModeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:mbrcPartyMode.View"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:mbrcPartyMode.View"
+             xmlns:vm="clr-namespace:mbrcPartyMode.ViewModel"
+           
+             Width="Auto"
+             Height="Auto"
+             HorizontalContentAlignment="Stretch"
+             d:DesignHeight="309"
+             d:DesignWidth="470"
+             mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <vm:PartyModeViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ClientViewTemplate">
+            <v:ClientView />
+        </DataTemplate>
+        <DataTemplate x:Key="ClientDetailViewTemplate">
+            <v:ClientDetailView />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Height="Auto"
+          Width="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Label  Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Height="Auto"
+                Width="Auto"
+                Background="Lavender"
+                Content="Party Mode extension"
+                FontStyle="Italic"
+                FontWeight="Bold" 
+                Margin="1,1,1,1" />
+        <StackPanel Grid.Row="1"
+                    Grid.RowSpan="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="1"
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+ 
+
+            <TextBlock Margin="5"
+                       Foreground="black"
+                       TextWrapping="Wrap">
+                this extension allows you to control the access rights/ executable commands of the connected clients
+            </TextBlock>
+
+            <CheckBox Content="active" IsChecked="{Binding IsActive}" />
+            <v:ClientView MinHeight="50"
+                          MaxHeight="150"
+                          Margin="1"
+                          BorderBrush="Gray"
+                          BorderThickness="0.7"
+                          Content="{Binding ClientViewModel}"
+                          ContentTemplate="{StaticResource ClientViewTemplate}"
+                          IsEnabled="{Binding IsActive}" />
+            <v:ClientDetailView MinHeight="150"
+                                MaxHeight="300"
+                                Margin="1"
+                                BorderBrush="Gray"
+                                BorderThickness="0.7"
+                                Content="{Binding ClientDetailViewModel}"
+                                ContentTemplate="{StaticResource ClientDetailViewTemplate}"
+                                IsEnabled="{Binding IsActive}" />
+
+            <Button Name="BtnSave"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Command="{Binding Path=SaveCommand}"
+                    Content="save" />
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Grid.RowSpan="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="1"
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+            <TextBlock Margin="5"
+                       Foreground="black"
+                       TextWrapping="Wrap">
+                server activity log viewer
+            </TextBlock>
+            <ListView MinWidth="100"
+                      MinHeight="100"
+                      Height="auto"
+                      Width="auto"
+                      ItemsSource="{Binding Logs}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                      IsSynchronizedWithCurrentItem="True" 
+                      vm:ListViewExtenders.AutoScrollToCurrentItem="True" 
+                      >
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="count" Width="25" DisplayMemberBinding="{Binding Count}" />
+                        <GridViewColumn Header="client" Width="120" DisplayMemberBinding="{Binding Client}" />
+                        <GridViewColumn Header="command" Width="50" DisplayMemberBinding="{Binding Command}" />
+                        <GridViewColumn Header="rejected" Width="150" DisplayMemberBinding="{Binding Rejected}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
+

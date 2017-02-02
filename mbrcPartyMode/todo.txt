@@ -1,0 +1,11 @@
+﻿- receive more infos from ip adrs like vendor...
+-check / fix dispose						--> done
+- map the various commands
+	- volume
+	- mute
+	- shuffel
+	- repeat
+- fix disconnect						  --> done
+- fix size of partymode view
+- fix on the fly connect while window open -->done
+- fix the tab naming and the whole userinterface to be nice and shiny 
