@@ -63,6 +63,7 @@
     <Compile Include="Model\PartyModeModel.cs" />
     <Compile Include="Helper\ClientAdress.cs" />
     <Compile Include="Helper\Settings.cs" />
+    <Compile Include="Model\ServerMessage.cs" />
     <Compile Include="PartyModeCommandHandler.cs" />
     <Content Include="todo.txt" />
     <Compile Include="ServerCommandEventArgs.cs" />
@@ -72,6 +73,9 @@
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ViewModel\Commands\PartyModeSaveCommand.cs" />
     <Compile Include="ViewModel\ModelBase.cs" />
+    <Compile Include="Helper\ObservableCollectionEx.cs" />
+    <Compile Include="Helper\CycledList.cs" />
+    <Compile Include="ViewModel\ServerMessageView.cs" />
     <Compile Include="View\ClientDetailView.xaml.cs">
       <DependentUpon>ClientDetailView.xaml</DependentUpon>
     </Compile>

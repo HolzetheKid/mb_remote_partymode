@@ -26,6 +26,9 @@
                     <GridViewColumn Width="150"
                                     DisplayMemberBinding="{Binding IpAddress}"
                                     Header="Ip Address" />
+                    <GridViewColumn Width="50"
+                                    DisplayMemberBinding="{Binding ClientId}"
+                                    Header="client" />
                 </GridView>
             </ListView.View>
         </ListView>

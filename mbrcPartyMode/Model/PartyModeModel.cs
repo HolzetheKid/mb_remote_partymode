@@ -1,15 +1,13 @@
 ﻿using mbrcPartyMode.Helper;
 using mbrcPartyMode.ViewModel;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 
 namespace mbrcPartyMode.Model
 {
-
-
     public class PartyModeModel : ModelBase
     {
         #region vars
@@ -18,6 +16,7 @@ namespace mbrcPartyMode.Model
         private Settings settings;
         private List<ConnectedClientAddress> connectedAdresses;
         private SettingsHandler handler;
+        private CycledList<ServerMessage> serverMessages;
 
         #endregion vars
 
@@ -34,7 +33,10 @@ namespace mbrcPartyMode.Model
             commandHandler.ClientDisconnected += ClientDisconnected;
             commandHandler.ServerCommandExecuted += ServerCommandExecuted;
             connectedAdresses = new List<ConnectedClientAddress>();
-            LastServerMessages = new List<ServerMessage>();
+
+            serverMessages = new CycledList<ServerMessage>(10);
+
+            ServerMessagesQueue = new ConcurrentQueue<ServerMessage>();
         }
 
         #endregion constructor
@@ -130,12 +132,14 @@ namespace mbrcPartyMode.Model
 
         private void ServerCommandExecuted(object sender, ServerCommandEventArgs e)
         {
-            LastServerMessages.Add(new ServerMessage(e.Client, e.Command, e.IsCommandAllowed.ToString()));
-            OnPropertyChanged(nameof(LastServerMessages));
+            
+            var serverMessage = new ServerMessage(e.Client, e.Command, !e.IsCommandAllowed);
+            serverMessages.Add(serverMessage);
+            ServerMessagesQueue.Enqueue(serverMessage);
+            OnPropertyChanged(nameof(ServerMessagesQueue));
         }
 
-
-        public List<ServerMessage> LastServerMessages;
+        public ConcurrentQueue<ServerMessage> ServerMessagesQueue;
 
         public void SaveSettings()
         {
@@ -155,21 +159,11 @@ namespace mbrcPartyMode.Model
             handler.SaveSettings(settings);
         }
 
-    }
-
-    public class ServerMessage
-    {
-        public ServerMessage(string client, string command, string rejected)
+        public void RequestAllServerMessages()
         {
-            Client = client;
-            Command = command;
-            Rejected = rejected;
+            this.ServerMessagesQueue= new ConcurrentQueue<ServerMessage>(serverMessages);
+            OnPropertyChanged(nameof(ServerMessagesQueue));
         }
-        public string Client { get; set; }
-        public string Command { get; set; }
-        public string Rejected { get; set; }
-
 
     }
-
 }

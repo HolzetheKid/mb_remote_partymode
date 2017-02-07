@@ -124,20 +124,20 @@ namespace mbrcPartyMode.ViewModel
             }
         }
 
-        public bool CanShuffel
+        public bool CanShuffle
         {
             get
             {
                 if (clientAddress != null)
                 {
-                    return clientAddress.CanShuffel;
+                    return clientAddress.CanShuffle;
                 }
                 return true;
             }
             set
             {
-                clientAddress.CanShuffel = value;
-                OnPropertyChanged(nameof(CanShuffel));
+                clientAddress.CanShuffle = value;
+                OnPropertyChanged(nameof(CanShuffle));
             }
         }
 

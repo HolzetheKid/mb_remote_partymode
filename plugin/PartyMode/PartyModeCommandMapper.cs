@@ -60,6 +60,13 @@ namespace MusicBeePlugin.AndroidRemote.Commands
 
             #endregion stop
 
+            #region volume
+
+            ICommand requestVolumne = cmd as RequestVolume;
+            if (requestVolumne != null) return MappingCommand.CanSetVolume;
+
+            #endregion
+
             #region internal
 
             ICommand clientConnected = cmd as ClientConnected;

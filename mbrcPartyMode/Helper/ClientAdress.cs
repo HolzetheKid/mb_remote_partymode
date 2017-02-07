@@ -136,7 +136,7 @@ namespace mbrcPartyMode.Helper
             }
         }
 
-        public virtual bool CanShuffel
+        public virtual bool CanShuffle
         {
             get
             {

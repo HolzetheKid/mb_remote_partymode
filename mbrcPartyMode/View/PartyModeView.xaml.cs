@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace WindowsFormsApplication1
+namespace mbrcPartyMode.View
 {
     /// <summary>
     /// Interaction logic for PartyModeView.xaml
@@ -14,8 +13,7 @@ namespace WindowsFormsApplication1
           
         }
 
-      
-     
 
+       
     }
 }

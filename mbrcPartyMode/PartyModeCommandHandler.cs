@@ -16,6 +16,7 @@ namespace mbrcPartyMode
         ServerStart,
         ServerStop,
         StopServer,
+        CanSetVolume,
         CommandNotImplemented
     }
 
@@ -70,6 +71,8 @@ namespace mbrcPartyMode
                     return adr.CanSkipBackwards;
                 case MappingCommand.SkipForward:
                     return adr.CanSkipForwards;
+                case MappingCommand.CanSetVolume:
+                    return adr.CanVolumeUpDown;
                 case MappingCommand.CommandNotImplemented:
                     return true;
                 default:

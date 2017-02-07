@@ -11,6 +11,8 @@ using MusicBeePlugin.AndroidRemote.Settings;
 using MusicBeePlugin.Properties;
 using MusicBeePlugin.Tools;
 using NLog;
+using mbrcPartyMode.View;
+using mbrcPartyMode.ViewModel;
 
 namespace MusicBeePlugin
 {
@@ -29,6 +31,13 @@ namespace MusicBeePlugin
         {
             InitializeComponent();
             _ipAddressBinding = new BindingList<string>();
+            PartyModeView partyModeView = new PartyModeView();
+            partyModeView.DataContext = new PartyModeViewModel();
+            partyModeView.InitializeComponent();
+            this.elementHost1.Dock = DockStyle.Fill;
+            this.elementHost1.Child = partyModeView;
+
+            this.FormClosing += Form1_Closing;
         }
 
         /// <summary>
@@ -66,11 +75,11 @@ namespace MusicBeePlugin
             versionLabel.Text = settings.CurrentVersion;
             portNumericUpDown.Value = settings.ListeningPort;
             UpdateFilteringSelection(settings.FilterSelection);
-   
+
             UpdateSocketStatus(SocketServer.Instance.IsRunning);
             allowedAddressesComboBox.DataSource = _ipAddressBinding;
 
-            if (settings.Source == SearchSource.None) 
+            if (settings.Source == SearchSource.None)
             {
                 settings.Source |= SearchSource.Library;
             }
@@ -142,15 +151,15 @@ namespace MusicBeePlugin
 
         private void HandleSaveButtonClick(object sender, EventArgs e)
         {
-            UserSettings.Instance.ListeningPort = (uint) portNumericUpDown.Value;
-     
+            UserSettings.Instance.ListeningPort = (uint)portNumericUpDown.Value;
+
             switch (selectionFilteringComboBox.SelectedIndex)
             {
                 case 0:
                     break;
                 case 1:
                     UserSettings.Instance.BaseIp = ipAddressInputTextBox.Text;
-                    UserSettings.Instance.LastOctetMax = (uint) rangeNumericUpDown.Value;
+                    UserSettings.Instance.LastOctetMax = (uint)rangeNumericUpDown.Value;
                     break;
                 case 2:
                     UserSettings.Instance.IpAddressList = new List<string>(_ipAddressBinding);
@@ -214,7 +223,7 @@ namespace MusicBeePlugin
             {
                 MessageBox.Show(Resources.InfoWindow_OpenLogButtonClick_Log_file_doesn_t_exist);
             }
-           
+
         }
 
         public interface IOnDebugSelectionChanged
@@ -242,5 +251,22 @@ namespace MusicBeePlugin
             };
             Process.Start(startInfo);
         }
+
+        private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+
+            this.FormClosing -= Form1_Closing;
+
+            PartyModeView v = this.elementHost1.Child as PartyModeView;
+
+            if (v != null)
+            {
+                PartyModeViewModel vm = v.DataContext as PartyModeViewModel;
+                vm.Dispose();
+            }
+            this.elementHost1.Dispose();
+        }
+
     }
 }
