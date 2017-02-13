@@ -5,9 +5,9 @@ namespace mbrcPartyMode.View
     /// <summary>
     /// Interaction logic for ClientView.xaml
     /// </summary>
-    public partial class ClientView : UserControl
+    public partial class LogViewerView : UserControl
     {
-        public ClientView()
+        public LogViewerView()
         {
             InitializeComponent();
         }

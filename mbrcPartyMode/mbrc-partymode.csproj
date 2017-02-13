@@ -58,6 +58,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachedCommandBehavior\CommandBehavior.cs" />
+    <Compile Include="AttachedCommandBehavior\CommandBehaviorBinding.cs" />
+    <Compile Include="AttachedCommandBehavior\EventHandlerGenerator.cs" />
+    <Compile Include="AttachedCommandBehavior\SimpleCommand.cs" />
     <Compile Include="ClientEventArgs.cs" />
     <Compile Include="Helper\ConnnectedClientAddress.cs" />
     <Compile Include="Model\PartyModeModel.cs" />
@@ -71,13 +75,18 @@
     <Compile Include="Helper\SettingsHandler.cs" />
     <Compile Include="ViewModel\ClientDetailViewModel.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
-    <Compile Include="ViewModel\Commands\PartyModeSaveCommand.cs" />
+    <Compile Include="ViewModel\Commands\SaveCommand.cs" />
+    <Compile Include="ViewModel\LogViewerViewModel.cs" />
     <Compile Include="ViewModel\ModelBase.cs" />
     <Compile Include="Helper\ObservableCollectionEx.cs" />
     <Compile Include="Helper\CycledList.cs" />
     <Compile Include="ViewModel\ServerMessageView.cs" />
+    <Compile Include="ViewModel\Commands\UnloadedCommand.cs" />
     <Compile Include="View\ClientDetailView.xaml.cs">
       <DependentUpon>ClientDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LogViewerView.xaml.cs">
+      <DependentUpon>LogViewerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
@@ -97,6 +106,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Resource1.resx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -112,9 +122,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\Style\StyleDictonary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ClientDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LogViewerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ClientView.xaml">
       <SubType>Designer</SubType>

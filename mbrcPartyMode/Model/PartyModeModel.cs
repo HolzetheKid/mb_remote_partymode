@@ -34,7 +34,7 @@ namespace mbrcPartyMode.Model
             commandHandler.ServerCommandExecuted += ServerCommandExecuted;
             connectedAdresses = new List<ConnectedClientAddress>();
 
-            serverMessages = new CycledList<ServerMessage>(10);
+            serverMessages = new CycledList<ServerMessage>(10000);
 
             ServerMessagesQueue = new ConcurrentQueue<ServerMessage>();
         }

@@ -36,8 +36,7 @@ namespace MusicBeePlugin
             partyModeView.InitializeComponent();
             this.elementHost1.Dock = DockStyle.Fill;
             this.elementHost1.Child = partyModeView;
-
-            this.FormClosing += Form1_Closing;
+            this.helpButton.Click += HelpButtonClick;
         }
 
         /// <summary>
@@ -250,22 +249,6 @@ namespace MusicBeePlugin
                     $"-s {port}"
             };
             Process.Start(startInfo);
-        }
-
-        private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-
-            this.FormClosing -= Form1_Closing;
-
-            PartyModeView v = this.elementHost1.Child as PartyModeView;
-
-            if (v != null)
-            {
-                PartyModeViewModel vm = v.DataContext as PartyModeViewModel;
-                vm.Dispose();
-            }
-            this.elementHost1.Dispose();
         }
 
     }

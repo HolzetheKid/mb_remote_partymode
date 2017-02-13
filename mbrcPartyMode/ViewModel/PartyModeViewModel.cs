@@ -1,15 +1,9 @@
 ﻿using mbrcPartyMode.Model;
 using mbrcPartyMode.ViewModel.Commands;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Collections;
-using System.Diagnostics;
-using mbrcPartyMode.Helper;
 
 namespace mbrcPartyMode.ViewModel
 {
@@ -18,8 +12,9 @@ namespace mbrcPartyMode.ViewModel
         #region vars
 
         private readonly PartyModeModel model;
-        private ClientViewModel clientViewModel;
+        private readonly ClientViewModel clientViewModel;
         private ClientDetailViewModel clientDetailViewModel;
+        private readonly LogViewerViewModel logViewerViewModel;
         private bool isActive = false;
         private readonly Dispatcher _dispatcher;
         private static object _syncLock = new object();
@@ -33,11 +28,12 @@ namespace mbrcPartyMode.ViewModel
             this.model = PartyModeModel.Instance;
             this.clientViewModel = new ClientViewModel(model);
             this.clientDetailViewModel = new ClientDetailViewModel(clientViewModel.SelectedClient);
+            this.logViewerViewModel = new LogViewerViewModel(model);
             this.clientViewModel.PropertyChanged += OnPropertyChanged;
             this.model.PropertyChanged += OnPropertyChanged;
             this.isActive = model.Settings.IsActive;
-            Logs = new ObservableCollectionEx<ServerMessageView>();
-            this.SaveCommand = new PartyModeSaveCommand();
+
+            this.SaveCommand = new SaveCommand();
             this.model.RequestAllServerMessages();
 
             if (AppDomain.CurrentDomain != null)
@@ -51,7 +47,6 @@ namespace mbrcPartyMode.ViewModel
             }
 
             _dispatcher = Dispatcher.CurrentDispatcher;
-            ServerCommandExecuted();
         }
 
         #endregion constructor
@@ -68,6 +63,11 @@ namespace mbrcPartyMode.ViewModel
             get { return clientDetailViewModel; }
         }
 
+        public LogViewerViewModel LogViewerViewModel
+        {
+            get { return logViewerViewModel; }
+        }
+
         #endregion ViewModels
 
         #region Commands
@@ -82,9 +82,7 @@ namespace mbrcPartyMode.ViewModel
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PartyModeModel.ServerMessagesQueue))
-            { ServerCommandExecuted(); }
-            else if (e.PropertyName == nameof(ClientViewModel.SelectedClient))
+            if (e.PropertyName == nameof(ClientViewModel.SelectedClient))
             { SelectedClientChanged(); }
         }
 
@@ -92,18 +90,6 @@ namespace mbrcPartyMode.ViewModel
         {
             this.clientDetailViewModel = new ClientDetailViewModel(clientViewModel.SelectedClient);
             OnPropertyChanged(nameof(ClientDetailViewModel));
-        }
-
-        private void ServerCommandExecuted()
-        {
-
-            ServerMessage serverMessage;
-
-
-            while (model.ServerMessagesQueue.TryDequeue(out serverMessage))
-            {
-                Logs.Add(new ServerMessageView(Logs.Count, serverMessage));
-            }
         }
 
         public bool IsActive
@@ -123,17 +109,12 @@ namespace mbrcPartyMode.ViewModel
         {
             get
             {
-             #if DEBUG
+#if DEBUG
                 return true;
-             #else
+#else
                return false;
-             #endif
+#endif
             }
-        }
-
-        public ObservableCollectionEx<ServerMessageView> Logs
-        {
-            get; private set;
         }
 
         #region exception Handling
@@ -148,63 +129,25 @@ namespace mbrcPartyMode.ViewModel
             Dispose();
         }
 
-
-
-
         #endregion exception Handling
-
 
         #region Disposing
 
-
-        public ICommand Unloaded
+        public ICommand UnloadedCmd
         {
             get { return new UnloadedCommand(Dispose); }
         }
-
-     
-
 
         public void Dispose()
         {
             this.clientViewModel.PropertyChanged -= OnPropertyChanged;
             this.model.PropertyChanged -= OnPropertyChanged;
+            this.logViewerViewModel.Dispose();
+            this.clientViewModel.Dispose();
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
             Dispatcher.CurrentDispatcher.UnhandledException -= CurrentDispatcher_UnhandledException;
         }
 
-        public void PartyModeView_OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            Dispose();
-        }
-
-        private class UnloadedCommand : ICommand
-        {
-            private readonly Action _doAction;
-
-            public UnloadedCommand(Action doAction)
-            {
-                _doAction = doAction;
-            }
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public void Execute(object parameter)
-            {
-                _doAction();
-                Debug.WriteLine("Customer stuff is out of view");
-                
-            }
-        }
-
-        #endregion
+        #endregion Disposing
     }
-
-
-
-
 }

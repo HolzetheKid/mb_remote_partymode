@@ -130,6 +130,7 @@ namespace MusicBeePlugin
             this.openLogButton.TabIndex = 63;
             this.openLogButton.Text = "Open Log";
             this.openLogButton.UseVisualStyleBackColor = true;
+            this.openLogButton.Click += new System.EventHandler(this.OpenLogButtonClick);
             // 
             // debugEnabled
             // 
@@ -140,6 +141,7 @@ namespace MusicBeePlugin
             this.debugEnabled.TabIndex = 62;
             this.debugEnabled.Text = "Debug Log";
             this.debugEnabled.UseVisualStyleBackColor = true;
+            this.debugEnabled.CheckedChanged += new System.EventHandler(this.DebugCheckboxCheckedChanged);
             // 
             // saveButton
             // 
@@ -154,24 +156,12 @@ namespace MusicBeePlugin
             // rangeNumericUpDown
             // 
             this.rangeNumericUpDown.Location = new System.Drawing.Point(229, 133);
-            this.rangeNumericUpDown.Maximum = new decimal(new int[] {
-            254,
-            0,
-            0,
-            0});
-            this.rangeNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.rangeNumericUpDown.Maximum = new decimal(new int[] {254,0,0,0});
+            this.rangeNumericUpDown.Minimum = new decimal(new int[] {1,0,0,0});
             this.rangeNumericUpDown.Name = "rangeNumericUpDown";
             this.rangeNumericUpDown.Size = new System.Drawing.Size(43, 20);
             this.rangeNumericUpDown.TabIndex = 59;
-            this.rangeNumericUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.rangeNumericUpDown.Value = new decimal(new int[] {1,0,0,0});
             // 
             // addAddressButton
             // 
@@ -208,6 +198,7 @@ namespace MusicBeePlugin
             this.removeAddressButton.TabIndex = 48;
             this.removeAddressButton.Text = "-";
             this.removeAddressButton.UseVisualStyleBackColor = true;
+            this.removeAddressButton.Click += new System.EventHandler(this.RemoveAddressButtonClick);
             // 
             // addressLabel
             // 
@@ -224,6 +215,7 @@ namespace MusicBeePlugin
             this.ipAddressInputTextBox.Name = "ipAddressInputTextBox";
             this.ipAddressInputTextBox.Size = new System.Drawing.Size(110, 20);
             this.ipAddressInputTextBox.TabIndex = 57;
+            this.ipAddressInputTextBox.TextChanged += new System.EventHandler(this.HandleIpAddressInputTextBoxTextChanged);
             // 
             // allowLabel
             // 
@@ -246,6 +238,7 @@ namespace MusicBeePlugin
             this.selectionFilteringComboBox.Name = "selectionFilteringComboBox";
             this.selectionFilteringComboBox.Size = new System.Drawing.Size(159, 21);
             this.selectionFilteringComboBox.TabIndex = 55;
+            this.selectionFilteringComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectionFilteringComboBoxSelectedIndexChanged);
             // 
             // seperator2
             // 
@@ -267,24 +260,12 @@ namespace MusicBeePlugin
             // portNumericUpDown
             // 
             this.portNumericUpDown.Location = new System.Drawing.Point(113, 38);
-            this.portNumericUpDown.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.portNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.portNumericUpDown.Maximum = new decimal(new int[] {65535,0,0,0});
+            this.portNumericUpDown.Minimum = new decimal(new int[] {1,0,0,0});
             this.portNumericUpDown.Name = "portNumericUpDown";
             this.portNumericUpDown.Size = new System.Drawing.Size(159, 20);
             this.portNumericUpDown.TabIndex = 52;
-            this.portNumericUpDown.Value = new decimal(new int[] {
-            3000,
-            0,
-            0,
-            0});
+            this.portNumericUpDown.Value = new decimal(new int[] {3000,0,0,0});
             // 
             // portLabel
             // 
@@ -320,6 +301,7 @@ namespace MusicBeePlugin
             this.helpButton.TabIndex = 45;
             this.helpButton.Text = "Help";
             this.helpButton.UseVisualStyleBackColor = true;
+            this.helpButton.Click += new System.EventHandler(this.HelpButtonClick);
             // 
             // label3
             // 
@@ -453,6 +435,6 @@ namespace MusicBeePlugin
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage partyModeTP;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        
+
     }
 }

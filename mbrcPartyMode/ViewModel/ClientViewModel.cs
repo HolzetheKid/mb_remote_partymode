@@ -1,11 +1,12 @@
-﻿using mbrcPartyMode.Helper;
+﻿using System;
+using mbrcPartyMode.Helper;
 using mbrcPartyMode.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace mbrcPartyMode.ViewModel
 {
-    public class ClientViewModel : ModelBase
+    public class ClientViewModel : ModelBase, IDisposable
     {
         private PartyModeModel model;
         private ObservableCollection<ClientAdress> connectedClients = null;
@@ -52,6 +53,11 @@ namespace mbrcPartyMode.ViewModel
                 this.ConnectedClients = new ObservableCollection<ClientAdress>(model.ConnectedAddresses);
                 OnPropertyChanged(nameof(SelectedClient));
             }
+        }
+
+        public void Dispose()
+        {
+            model.PropertyChanged -= ModelOnPropertyChangend;
         }
     }
 }

@@ -32,12 +32,17 @@ namespace mbrcPartyMode.Helper
 
         public void Add(T item)
         {
-            if (list.Count == this.limit)
+            if (list.Count >= this.limit)
             {
                 list.RemoveAt(0);
                 list.Add(item);
+               
             }
-            list.Add(item);
+            else
+            {
+                list.Add(item);
+            }
+           
         }
 
         public void Clear()
