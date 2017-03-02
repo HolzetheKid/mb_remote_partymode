@@ -13,10 +13,10 @@ namespace mbrcPartyMode.Model
         #region vars
 
         private static PartyModeModel instance;
-        private Settings settings;
-        private List<ConnectedClientAddress> connectedAdresses;
-        private SettingsHandler handler;
-        private CycledList<ServerMessage> serverMessages;
+        private readonly Settings settings;
+        private readonly List<ConnectedClientAddress> connectedAdresses;
+        private readonly SettingsHandler handler;
+        private readonly CycledList<ServerMessage> serverMessages;
 
         #endregion vars
 
@@ -70,11 +70,21 @@ namespace mbrcPartyMode.Model
             }
         }
 
-        public ConnectedClientAddress GetConnectedClientAdresss(string clientId, IPAddress ipadress)
+        public ConnectedClientAddress GetConnectedClientAdresss(string clientId, IPAddress ipadress, bool isActionClient)
         {
             if (connectedAdresses.Any())
             {
-                var cadr = connectedAdresses.SingleOrDefault(x => x.ClientId == clientId);
+                ConnectedClientAddress cadr;
+
+                if (isActionClient)
+                {
+                    cadr = connectedAdresses.SingleOrDefault(x => x.IpAddress.Equals(ipadress));
+                }
+                else
+                {
+                     cadr = connectedAdresses.SingleOrDefault(x => x.ClientId == clientId);
+                }
+                
                 if (cadr != null)
                 {
                     return cadr;
@@ -103,7 +113,7 @@ namespace mbrcPartyMode.Model
         {
             if (e.adr != null)
             {
-                if (!connectedAdresses.Any(x => x.MacAdress.ToString() == e.adr.MacAdress.ToString()))
+                if (connectedAdresses.All(x => x.MacAdress.ToString() != e.adr.MacAdress.ToString()))
                 {
                     //to do: check if the Macadr is not null
                     ClientAdress knownAdress = settings.KnownAdresses.SingleOrDefault(x => x.MacAdress.ToString() == e.adr.MacAdress.ToString());

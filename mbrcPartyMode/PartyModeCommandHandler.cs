@@ -82,11 +82,7 @@ namespace mbrcPartyMode
 
         public void OnClientConnected(ConnectedClientAddress adr)
         {
-
-            if (ClientConnected != null)
-            {
-                ClientConnected(this, new ClientEventArgs(adr));
-            }
+            ClientConnected?.Invoke(this, new ClientEventArgs(adr));
         }
 
         public void OnClientDisconnected(ConnectedClientAddress adr)

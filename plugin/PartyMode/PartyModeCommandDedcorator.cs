@@ -1,16 +1,10 @@
 using mbrcPartyMode;
 using mbrcPartyMode.Helper;
 using mbrcPartyMode.Model;
-using mbrcPartyMode.Tools;
-using MusicBeePlugin.AndroidRemote.Commands.Requests;
 using MusicBeePlugin.AndroidRemote.Interfaces;
 using MusicBeePlugin.AndroidRemote.Networking;
-using MusicBeePlugin.AndroidRemote.Utilities;
-using NLog;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using MusicBeePlugin.AndroidRemote.Events;
 
 namespace MusicBeePlugin.AndroidRemote.Commands
 {
@@ -40,9 +34,6 @@ namespace MusicBeePlugin.AndroidRemote.Commands
                 case MappingCommand.StopServer:
                     PartyModeModel.Instance.SaveSettings();
                     break;
-
-                default:
-                    break;
             }
         }
 
@@ -55,7 +46,7 @@ namespace MusicBeePlugin.AndroidRemote.Commands
             ConnectedClientAddress adr = null;
             if (socketserver != null)
             {
-                adr = model.GetConnectedClientAdresss(eEvent.ClientId, socketserver.GetIpAddress(eEvent.ClientId));
+                adr = model.GetConnectedClientAdresss(eEvent.ClientId, socketserver.GetIpAddress(eEvent.ClientId), eEvent.Type == EventType.ActionClientConnected);
             }
 
             bool isAllowed = PartyModeCommandHandler.Instance.IsCommandAllowed(mc, adr) == true;
